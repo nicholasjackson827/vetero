@@ -1,0 +1,71 @@
+Weather API
+- DarkSky
+  - Documentation looks to be most complete, good free-teir, and simple pricing (if needed)
+  - Super simple web API call
+  - Plenty of data for what I need
+  - One thing it's missing is getting data by city/state, requires lat/long
+- OpenWeather
+  - Documentation looks pretty good, not great 
+  - Offers current weather data and a simple 5 day forecast
+  - 60 calls per min should be plenty for dev work
+  - Can get weather info by city/state or zip
+
+Stack
+- Spring Boot on BE 
+- MySQL for the DB
+- React on the FE 
+- All run in containers with Docker
+  - https://www.callicoder.com/spring-boot-mysql-react-docker-compose-example/
+
+DB Structure
+- user
+  - id auto-incrementing
+  - username
+- location
+  - id auto-incrementing
+  - city 
+  - state 
+  - zip 
+  - lat 
+  - long 
+- user_location_map
+  - user_id fk user.id 
+  - location_id fk location.id 
+
+Endpoints
+- Users 
+  - POST /users/
+    - Request Body: User 
+    - Response Code: 201
+    - Response Body: User (with ID)
+  - GET /users/{id}
+    - Response Code: 200
+    - Response Body: User (with id)
+  - DELETE /users/{id}
+    - Response Code: 204
+    - Response Body: None
+  - GET /users/ not needed 
+  - UPDATE /users/{id} not needed, can just delete and recreate user
+- Locations
+  - Object: 
+  {
+    "id": id,
+    "userId": userId,
+    "city": city,
+    "state": state,
+    "zip": zip,
+    "lat": lat,
+    "long": long
+  }
+  - POST /locations/
+    - Request Body: Location 
+    - Response Code: 201
+    - Response Body: Location (with ID)
+  - GET /locations/
+    - Params
+      - Name: username 
+      - Value: String 
+      - Optional: No 
+    - Response Code: 200
+    - Response Body: List of Locations 
+

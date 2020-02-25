@@ -35,6 +35,15 @@ public class UserController {
 
   @PostMapping("/users/")
   public User createUser(@RequestBody User newUser) {
+
+    // Check to make sure that username is unique
+    if (userRepository.findByUsername(newUser.getUsername()) != null) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          "User with username \"" + newUser.getUsername() + "\" already exists!"
+      );
+    }
+
     return userRepository.save(newUser);
   }
 

@@ -23,11 +23,7 @@ DB Structure
   - username
 - location
   - id auto-incrementing
-  - city 
-  - state 
-  - zip 
-  - lat 
-  - long 
+  - zip
 - user_location_map
   - user_id fk user.id 
   - location_id fk location.id 
@@ -51,11 +47,7 @@ Endpoints
   {
     "id": id,
     "userId": userId,
-    "city": city,
-    "state": state,
-    "zip": zip,
-    "lat": lat,
-    "long": long
+    "zip": zip
   }
   - POST /locations/
     - Request Body: Location 

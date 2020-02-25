@@ -1,12 +1,51 @@
 package com.ngjackson.vetero.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.ngjackson.vetero.models.User;
+import com.ngjackson.vetero.repositories.UserRepository;
+import com.ngjackson.vetero.utils.ExceptionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
 public class UserController {
 
-  @GetMapping("/test/")
-  public String testEndpoint() {
-    return "It works!";
+  @Autowired
+  private UserRepository userRepository;
+
+  @GetMapping("/users/")
+  public List<User> listUsers() {
+    return userRepository.findAll();
+  }
+
+  @GetMapping("/users/{id}")
+  public User getUser(@PathVariable("id") Long id) {
+    return userRepository
+      .findById(id)
+      .orElseThrow(() -> ExceptionUtil.buildNotFoundException(User.class, id));
+  }
+
+  @PostMapping("/users/")
+  public User createUser(@RequestBody User newUser) {
+    return userRepository.save(newUser);
+  }
+
+  @DeleteMapping("/users/{id}")
+  public ResponseEntity deleteUser(@PathVariable("id") Long id) {
+    try {
+      userRepository.deleteById(id);
+    } catch (EmptyResultDataAccessException e) {
+      throw ExceptionUtil.buildNotFoundException(User.class, id);
+    }
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 
 }

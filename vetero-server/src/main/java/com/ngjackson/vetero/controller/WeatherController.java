@@ -26,7 +26,10 @@ public class WeatherController {
   private UserRepository userRepository;
 
   @GetMapping("/weather/")
-  public WeatherResponse getWeatherForUser(@RequestParam("userId") Long userId) throws InterruptedException, IOException, URISyntaxException {
+  public WeatherResponse getWeatherForUser(
+      @RequestParam("userId") Long userId,
+      @RequestParam(value = "forceUpdate", required = false, defaultValue = "false") boolean forceUpdate
+  ) throws InterruptedException, IOException, URISyntaxException {
     User user = userRepository
         .findById(userId)
         .orElseThrow(() -> ExceptionUtil.buildNotFoundException(User.class, userId));
@@ -36,7 +39,7 @@ public class WeatherController {
         .collect(Collectors.toList());
 
     WeatherService weatherService = new WeatherService();
-    List<WeatherLocation> weatherLocations = weatherService.getWeather(userZipCodes);
+    List<WeatherLocation> weatherLocations = weatherService.getWeather(userZipCodes, forceUpdate);
 
     return new WeatherResponse(user.getUsername(), weatherLocations);
   }

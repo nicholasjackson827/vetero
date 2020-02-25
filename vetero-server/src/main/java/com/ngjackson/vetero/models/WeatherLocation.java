@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.ngjackson.vetero.models.openweather.OpenWeatherApiResponse;
 import com.ngjackson.vetero.models.openweather.OpenWeatherWeather;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 public class WeatherLocation {
@@ -17,6 +18,8 @@ public class WeatherLocation {
   private Long humidity;
   private Wind wind;
 
+  private LocalDateTime lastUpdated;
+
   public static WeatherLocation deserializeFromJson(String zipCode, String json) {
     WeatherLocation location = new WeatherLocation();
     Gson gson = new Gson();
@@ -29,6 +32,7 @@ public class WeatherLocation {
     location.setFeelsLike(response.getTemperatures().getFeelsLike());
     location.setPressure(response.getTemperatures().getPressure());
     location.setHumidity(response.getTemperatures().getHumidity());
+    location.setLastUpdated(LocalDateTime.now());
 
     String weatherStatusDescription = response
         .getWeather()
@@ -107,5 +111,13 @@ public class WeatherLocation {
 
   public void setWind(Wind wind) {
     this.wind = wind;
+  }
+
+  public LocalDateTime getLastUpdated() {
+    return lastUpdated;
+  }
+
+  public void setLastUpdated(LocalDateTime lastUpdated) {
+    this.lastUpdated = lastUpdated;
   }
 }

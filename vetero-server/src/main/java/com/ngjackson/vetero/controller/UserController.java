@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
   @Autowired
@@ -35,7 +36,7 @@ public class UserController {
     if (user == null) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST,
-          "Unable to find user with username " + username + "!"
+          "User not found!"
       );
     }
     return user;
@@ -48,7 +49,7 @@ public class UserController {
     if (userRepository.findByUsername(newUser.getUsername()) != null) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST,
-          "User with username \"" + newUser.getUsername() + "\" already exists!"
+          "Username already taken!"
       );
     }
 

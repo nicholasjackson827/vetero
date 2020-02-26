@@ -21,16 +21,24 @@ public class UserController {
   @Autowired
   private UserRepository userRepository;
 
-  @GetMapping("/users/")
-  public List<User> listUsers() {
-    return userRepository.findAll();
-  }
-
   @GetMapping("/users/{id}")
   public User getUser(@PathVariable("id") Long id) {
     return userRepository
       .findById(id)
       .orElseThrow(() -> ExceptionUtil.buildNotFoundException(User.class, id));
+  }
+
+  @GetMapping("/users/")
+  public User getUserByUsername(@RequestParam("username") String username) {
+    User user = userRepository.findByUsername(username);
+
+    if (user == null) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          "Unable to find user with username " + username + "!"
+      );
+    }
+    return user;
   }
 
   @PostMapping("/users/")

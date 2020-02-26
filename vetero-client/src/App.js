@@ -122,15 +122,25 @@ class App extends Component {
       userId: this.state.user.id,
       zip: zip
     };
-    await fetch(url, {
+    let response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(body)
     });
+    let json = await response.json();
 
-    this.updateWeather(false);
+    if ("error" in json) {
+      this.setState({
+        addLocationError: json.message
+      });
+    } else {
+      this.setState({
+        addLocationError: ""
+      });
+      this.updateWeather(false);
+    }
   }
 
   async handleLocationDelete(zip) {

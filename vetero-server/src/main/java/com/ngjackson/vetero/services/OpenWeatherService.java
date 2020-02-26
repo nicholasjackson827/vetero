@@ -5,6 +5,7 @@ import com.ngjackson.vetero.models.WeatherLocation;
 import com.ngjackson.vetero.models.openweather.OpenWeatherApiResponse;
 import com.ngjackson.vetero.utils.WeatherUtil;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,6 @@ public class OpenWeatherService {
         .build();
   }
 
-
   public static WeatherLocation getWeather(String zipCode, boolean forceUpdate) throws URISyntaxException, IOException, InterruptedException {
 
     // If a cached value is fine AND the cache has a value for this zip, use it!
@@ -54,6 +54,27 @@ public class OpenWeatherService {
     cache.getWeatherLocationCache().put(zipCode, weatherLocation);
 
     return weatherLocation;
+  }
+
+  public static boolean isKnownZip(String zipCode) throws URISyntaxException, IOException, InterruptedException {
+    if (cache.getWeatherLocationCache().containsKey(zipCode)) {
+      return true;
+    }
+
+    String url = BASE_URL + "?zip=" + zipCode + ",us&units=imperial&appid=" + API_KEY;
+    HttpRequest request = HttpRequest.newBuilder(new URI(url)).build();
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    System.out.println(response.body());
+
+    if (response.statusCode() != HttpStatus.OK.value()) {
+      return false;
+    }
+
+    // Since we have the data, might as well parse it and throw it in the cache
+    WeatherLocation weatherLocation = WeatherUtil.deserializeFromJson(zipCode, response.body());
+    cache.getWeatherLocationCache().put(zipCode, weatherLocation);
+
+    return true;
   }
 
 }

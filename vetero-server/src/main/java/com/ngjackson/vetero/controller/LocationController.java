@@ -6,12 +6,17 @@ import com.ngjackson.vetero.models.Location;
 import com.ngjackson.vetero.models.User;
 import com.ngjackson.vetero.repositories.LocationRepository;
 import com.ngjackson.vetero.repositories.UserRepository;
+import com.ngjackson.vetero.services.OpenWeatherService;
+import com.ngjackson.vetero.services.WeatherService;
 import com.ngjackson.vetero.utils.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +24,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 public class LocationController {
+
+  private static final String VALID_NUMBER_REGEX = "\\d+(\\.\\d+)?";
 
   @Autowired
   private UserRepository userRepository;
@@ -37,9 +44,33 @@ public class LocationController {
   @PostMapping("/locations/")
   public Location createLocation(@RequestBody CreateLocationRequest request) {
 
+    // Quickly validate the zip code
+    String zip = request.getZip();
+    if (zip == null || zip.length() != 5 || !zip.matches(VALID_NUMBER_REGEX)) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          "Invalid zip format!"
+      );
+    }
+
+    try {
+      if (!OpenWeatherService.isKnownZip(zip)) {
+        throw new ResponseStatusException(
+            HttpStatus.BAD_REQUEST,
+            "Unable to find city with zip!"
+        );
+      }
+    } catch (InterruptedException | IOException | URISyntaxException e) {
+      e.printStackTrace();
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          "Unknown error while parsing zip!"
+      );
+    }
+
     // The request must have a zip, so go ahead and create the location (if it doesn't exist)
     Location location = new Location();
-    location.setZip(request.getZip());
+    location.setZip(zip);
     location = locationRepository.save(location);
 
     // If the request also has a user ID (meaning the location is associated with a user)

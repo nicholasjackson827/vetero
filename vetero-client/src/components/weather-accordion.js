@@ -37,10 +37,10 @@ class WeatherAccordion extends React.Component {
     sortedLocations.sort((a, b) => {
       let aLocationName = a.locationName.toLowerCase();
       let bLocationName = b.locationName.toLowerCase();
-      if (a.locationName != b.locationName) {
+      if (a.locationName !== b.locationName) {
         return aLocationName < bLocationName ? -1 : 1;
       }
-      return parseInt(a.zip) - parseInt(b.zip);
+      return parseInt(a.zip, 10) - parseInt(b.zip, 10);
     });
 
     let accordionItems = sortedLocations.map(location => {

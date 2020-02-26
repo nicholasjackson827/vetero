@@ -3,6 +3,7 @@ package com.ngjackson.vetero.services;
 import com.ngjackson.vetero.config.CacheConfig;
 import com.ngjackson.vetero.models.WeatherLocation;
 import com.ngjackson.vetero.models.openweather.OpenWeatherApiResponse;
+import com.ngjackson.vetero.utils.WeatherUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,8 @@ public class OpenWeatherService {
     String url = BASE_URL + "?zip=" + zipCode + ",us&units=imperial&appid=" + API_KEY;
     HttpRequest request = HttpRequest.newBuilder(new URI(url)).build();
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    WeatherLocation weatherLocation = WeatherLocation.deserializeFromJson(zipCode, response.body());
+    System.out.println(response.body());
+    WeatherLocation weatherLocation = WeatherUtil.deserializeFromJson(zipCode, response.body());
 
     // Store the value in the cache for future use
     cache.getWeatherLocationCache().put(zipCode, weatherLocation);

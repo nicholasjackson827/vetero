@@ -1,12 +1,10 @@
 .App {
   min-width: 80vw;
-  min-height: 80vh;
+  min-height: 100vh;
 
   background: white;
   box-shadow: #c7c7c7 0px 0px 20px 9px;
-}
 
-.App-header {
   font-size: 24px;
   text-align: center;
   padding: 1em 0;
@@ -86,4 +84,146 @@
   width: 100%;
   height: 28px;
   margin-bottom: 0;
+}
+
+p.last-updated {
+  font-size: 18px;
+  color: #3f3f3f;
+}
+
+button.update-weather-now {
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  color: #3f3f3f;
+  background: none;
+  font-size: 18px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* Accordion CSS */
+
+.accordion {
+  margin: 0 20%;
+  box-shadow: #c7c7c7 0px 0px 20px 9px;
+}
+
+.accordion__item {
+  border: 1px solid gray;
+}
+
+.accordion__heading {
+  background-color: #35495e;
+  color: white;
+}
+
+.accordion__button {
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.accordion__button span {
+  margin: 0 8px;
+  line-height: 32px;
+  user-select: none;
+}
+
+.accordion__button .location-name {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.accordion__button .zip {
+  font-size: 20px;
+}
+
+.accordion__button .temp {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.degrees::after {
+  content: "\00B0";
+}
+
+.pressure::after {
+  content: " inHg";
+}
+
+.accordion__panel[aria-hidden="false"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 16px 0px;
+}
+
+.accordion__panel .label {
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #6f6f6f;
+}
+
+.accordion__panel .data {
+  font-size: 32px;
+}
+
+.accordion__panel .divider {
+  grid-column: 1 / span 2;
+  height: 3px;
+  background-color: #e6e6e6;
+  margin: 8px 0px;
+}
+
+.accordion__panel .button-wrapper {
+  grid-column: 1 / span 2;
+  align-self: center;
+}
+
+button.delete {
+  border: none;
+  outline: none;
+  color: #ff7e67;
+  background: none;
+  font-size: 18px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+button.delete.confirmation {
+  background: #ff7e67;
+  color: white;
+}
+
+.accordion__item .add-location {
+  display: flex;
+
+  background: #347474;
+  color: white;
+  padding: 8px 24px;
+}
+.accordion__item .add-location label,
+.accordion__item .add-location span {
+  line-height: 48px;
+}
+
+.accordion__item .add-location input {
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid white;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  width: 80px;
+  margin: 0px 12px;
+}
+
+.accordion__item .add-location input::placeholder {
+  color: #ffffff85;
+}
+
+.accordion__item .add-location .add-location-error {
+  color: #ff7e67;
 }

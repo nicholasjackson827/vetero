@@ -10,10 +10,10 @@ insert into users (id, username) values (9983, "Suzy");
 insert into users (id, username) values (9984, "Sally");
 
 insert into locations (id, zip) values (9980, "40514");
-insert into locations (id, zip) values (9981, "40515");
-insert into locations (id, zip) values (9982, "40516");
-insert into locations (id, zip) values (9983, "40517");
-insert into locations (id, zip) values (9984, "40518");
+insert into locations (id, zip) values (9981, "41017");
+insert into locations (id, zip) values (9982, "29925");
+insert into locations (id, zip) values (9983, "90210");
+insert into locations (id, zip) values (9984, "10001");
 
 insert into users_locations (user_id, locations_id) values (9980, 9980);
 insert into users_locations (user_id, locations_id) values (9981, 9981);

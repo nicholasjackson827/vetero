@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +42,13 @@ public class WeatherController {
     WeatherService weatherService = new WeatherService();
     List<WeatherLocation> weatherLocations = weatherService.getWeather(userZipCodes, forceUpdate);
 
-    return new WeatherResponse(user.getUsername(), weatherLocations);
+    // Get the last time each field was updated and take the max as the last time it was updated
+    ZonedDateTime lastUpdated = weatherLocations.stream()
+        .map(WeatherLocation::getLastUpdated)
+        .max(Comparator.naturalOrder())
+        .orElse(null);
+
+    return new WeatherResponse(user.getUsername(), weatherLocations, lastUpdated);
   }
 
 }

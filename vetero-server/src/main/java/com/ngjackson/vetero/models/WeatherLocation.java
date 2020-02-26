@@ -5,6 +5,7 @@ import com.ngjackson.vetero.models.openweather.OpenWeatherApiResponse;
 import com.ngjackson.vetero.models.openweather.OpenWeatherWeather;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
 
 public class WeatherLocation {
@@ -14,40 +15,11 @@ public class WeatherLocation {
   private String description;
   private Double temp;
   private Double feelsLike;
-  private Long pressure;
+  private Double pressure;
   private Long humidity;
   private Wind wind;
 
-  private LocalDateTime lastUpdated;
-
-  public static WeatherLocation deserializeFromJson(String zipCode, String json) {
-    WeatherLocation location = new WeatherLocation();
-    Gson gson = new Gson();
-
-    OpenWeatherApiResponse response = gson.fromJson(json, OpenWeatherApiResponse.class);
-
-    location.setZip(zipCode);
-    location.setLocationName(response.getName());
-    location.setTemp(response.getTemperatures().getTemp());
-    location.setFeelsLike(response.getTemperatures().getFeelsLike());
-    location.setPressure(response.getTemperatures().getPressure());
-    location.setHumidity(response.getTemperatures().getHumidity());
-    location.setLastUpdated(LocalDateTime.now());
-
-    String weatherStatusDescription = response
-        .getWeather()
-        .stream()
-        .map(OpenWeatherWeather::getMainName)
-        .collect(Collectors.joining(", "));
-    location.setDescription(weatherStatusDescription);
-
-    Wind wind = new Wind();
-    wind.setDirection(response.getWind().getDeg());
-    wind.setSpeed(response.getWind().getSpeed());
-    location.setWind(wind);
-
-    return location;
-  }
+  private transient ZonedDateTime lastUpdated;
 
   public String getZip() {
     return zip;
@@ -89,11 +61,11 @@ public class WeatherLocation {
     this.feelsLike = feelsLike;
   }
 
-  public Long getPressure() {
+  public Double getPressure() {
     return pressure;
   }
 
-  public void setPressure(Long pressure) {
+  public void setPressure(Double pressure) {
     this.pressure = pressure;
   }
 
@@ -113,11 +85,11 @@ public class WeatherLocation {
     this.wind = wind;
   }
 
-  public LocalDateTime getLastUpdated() {
+  public ZonedDateTime getLastUpdated() {
     return lastUpdated;
   }
 
-  public void setLastUpdated(LocalDateTime lastUpdated) {
+  public void setLastUpdated(ZonedDateTime lastUpdated) {
     this.lastUpdated = lastUpdated;
   }
 }

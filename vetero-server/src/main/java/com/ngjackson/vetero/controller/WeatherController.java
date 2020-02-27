@@ -45,7 +45,7 @@ public class WeatherController {
     // Get the last time each field was updated and take the max as the last time it was updated
     ZonedDateTime lastUpdated = weatherLocations.stream()
         .map(WeatherLocation::getLastUpdated)
-        .max(Comparator.naturalOrder())
+        .min(Comparator.naturalOrder())
         .orElse(null);
 
     return new WeatherResponse(user.getUsername(), weatherLocations, lastUpdated);

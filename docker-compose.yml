@@ -38,10 +38,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/vetero?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: vetero
       SPRING_DATASOURCE_PASSWORD: superSecretPassword
-      OPENWEATHER_API_KEY: abc123
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - backend
       - frontend
+    secrets:
+      - openweather_api_key
 
   # Frontend Service
   app-client:
@@ -66,3 +67,8 @@ volumes:
 networks:
   backend:
   frontend:
+
+# Secrets
+secrets:
+  openweather_api_key:
+    file: ./openweather_api_key.txt

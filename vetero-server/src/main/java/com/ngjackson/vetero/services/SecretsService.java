@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 public class SecretsService {
 
   private static final String OPENWEATHER_API_KEY_ENV_NAME = "OPENWEATHER_API_KEY";
-  private static final String OPENWEATHER_API_KEY_FILE_PATH = "/run/secrets/openweather_api_key.txt";
+  private static final String OPENWEATHER_API_KEY_FILE_PATH = "/run/secrets/openweather_api_key";
 
   public static String getOpenWeatherApiKey() {
 

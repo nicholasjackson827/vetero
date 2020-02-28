@@ -1,12 +1,6 @@
 package com.ngjackson.vetero.models;
 
-import com.google.gson.Gson;
-import com.ngjackson.vetero.models.openweather.OpenWeatherApiResponse;
-import com.ngjackson.vetero.models.openweather.OpenWeatherWeather;
-
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.stream.Collectors;
 
 public class WeatherLocation {
 

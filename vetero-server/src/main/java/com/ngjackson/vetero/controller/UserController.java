@@ -7,12 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -22,6 +18,12 @@ public class UserController {
   @Autowired
   private UserRepository userRepository;
 
+  /**
+   * Get a user by ID.
+   *
+   * @param id ID for the user.
+   * @return The User object, if found.
+   */
   @GetMapping("/users/{id}")
   public User getUser(@PathVariable("id") Long id) {
     return userRepository
@@ -29,6 +31,12 @@ public class UserController {
       .orElseThrow(() -> ExceptionUtil.buildNotFoundException(User.class, id));
   }
 
+  /**
+   * Get a user by username.
+   *
+   * @param username ID for the user.
+   * @return The User object, if found.
+   */
   @GetMapping("/users/")
   public User getUserByUsername(@RequestParam("username") String username) {
     User user = userRepository.findByUsername(username);
@@ -42,6 +50,12 @@ public class UserController {
     return user;
   }
 
+  /**
+   * Create a user.
+   *
+   * @param newUser The new user object (minus the ID).
+   * @return The newly created user, with ID, if created.
+   */
   @PostMapping("/users/")
   public User createUser(@RequestBody User newUser) {
 
@@ -56,6 +70,12 @@ public class UserController {
     return userRepository.save(newUser);
   }
 
+  /**
+   * Delete a user.
+   *
+   * @param id ID of the user to delete.
+   * @return Empty response, if successful.
+   */
   @DeleteMapping("/users/{id}")
   public ResponseEntity deleteUser(@PathVariable("id") Long id) {
     try {

@@ -2,9 +2,6 @@ package com.ngjackson.vetero.models;
 
 import com.ngjackson.vetero.utils.WeatherUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Wind {
 
   private Double speed;

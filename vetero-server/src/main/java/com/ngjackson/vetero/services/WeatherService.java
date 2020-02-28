@@ -12,9 +12,16 @@ import java.util.List;
 public class WeatherService {
 
   public WeatherService() {
-
+    // Empty constructor
   }
 
+  /**
+   * Get weather for a list of zip codes.
+   *
+   * @param zipCodes List of zip codes to get weather for.
+   * @param forceUpdate True if we should force an update for these zips.
+   * @return A list of WeatherLocations if successful.
+   */
   public List<WeatherLocation> getWeather(List<String> zipCodes, boolean forceUpdate) throws InterruptedException, IOException, URISyntaxException {
     // TODO: Make this call asynchronous
     List<WeatherLocation> list = new ArrayList<>();

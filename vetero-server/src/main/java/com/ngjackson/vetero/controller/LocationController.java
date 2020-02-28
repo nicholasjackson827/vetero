@@ -7,7 +7,6 @@ import com.ngjackson.vetero.models.User;
 import com.ngjackson.vetero.repositories.LocationRepository;
 import com.ngjackson.vetero.repositories.UserRepository;
 import com.ngjackson.vetero.services.OpenWeatherService;
-import com.ngjackson.vetero.services.WeatherService;
 import com.ngjackson.vetero.utils.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,12 @@ public class LocationController {
   @Autowired
   private LocationRepository locationRepository;
 
+  /**
+   * Get all locations for a user.
+   *
+   * @param userId User ID to get locations for.
+   * @return A Set of locations that belong to that user.
+   */
   @GetMapping("/locations/")
   public Set<Location> getLocations(@RequestParam("userId") Long userId) {
     User user = userRepository
@@ -41,6 +46,12 @@ public class LocationController {
     return user.getLocations();
   }
 
+  /**
+   * Create a location.
+   *
+   * @param request A completed CreateLocationRequest with user ID and zip code.
+   * @return A location (if successful)
+   */
   @PostMapping("/locations/")
   public Location createLocation(@RequestBody CreateLocationRequest request) {
 
@@ -53,6 +64,7 @@ public class LocationController {
       );
     }
 
+    // Have the weather service quickly check if it can find data for that zip
     try {
       if (!OpenWeatherService.isKnownZip(zip)) {
         throw new ResponseStatusException(
@@ -80,6 +92,7 @@ public class LocationController {
       return location;
     }
 
+    // Get the user so we can save the location to it
     User user = userRepository
         .findById(userId)
         .orElseThrow(() -> ExceptionUtil.buildNotFoundException(User.class, userId));
@@ -90,6 +103,13 @@ public class LocationController {
     return location;
   }
 
+  /**
+   * Delete a location for a user. It doesn't really delete the location, just
+   * disassociates it from the user.
+   *
+   * @param request The delete location request with user ID and zip code.
+   * @return Empty response with 204 if successful.
+   */
   @DeleteMapping("/locations/")
   public ResponseEntity deleteLocation(@RequestBody DeleteLocationRequest request) {
 

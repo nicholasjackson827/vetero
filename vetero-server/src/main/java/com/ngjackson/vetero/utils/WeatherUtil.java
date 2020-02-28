@@ -8,7 +8,6 @@ import com.ngjackson.vetero.models.openweather.OpenWeatherWeather;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,13 +41,21 @@ public class WeatherUtil {
     return directions.get(index);
   }
 
-
+  /**
+   * Deserialize a response from the OpenWeather API into a WeatherLocation POJO.
+   *
+   * @param zipCode The zip code for the POJO.
+   * @param json The JSON of to be deserialized.
+   * @return A completed WeatherLocation object, if successful.
+   */
   public static WeatherLocation deserializeFromJson(String zipCode, String json) {
     WeatherLocation location = new WeatherLocation();
     Gson gson = new Gson();
 
+    // Have GSON do all the heavy lifting for us
     OpenWeatherApiResponse response = gson.fromJson(json, OpenWeatherApiResponse.class);
 
+    // Map the OpenWeather objects to the WeatherLocation object.
     location.setZip(zipCode);
     location.setLocationName(response.getName());
     location.setTemp(response.getTemperatures().getTemp());
@@ -57,6 +64,7 @@ public class WeatherUtil {
     location.setHumidity(response.getTemperatures().getHumidity());
     location.setLastUpdated(ZonedDateTime.now());
 
+    // The API often returns multiple weather descriptions, so join them by commas
     String weatherStatusDescription = response
         .getWeather()
         .stream()
@@ -77,7 +85,14 @@ public class WeatherUtil {
     return location;
   }
 
+  /**
+   * Convert hectopascals to inches of mercury.
+   *
+   * @param hectopascal The qty of hectopascals to convert.
+   * @return The same qty in inches of mercury, rounded to 5 decimal places.
+   */
   public static double convertHectopascalToInchOfMercury(Double hectopascal) {
+    // Round this to 5 decimal places to knock off the end of the wonderful floating point math
     return new BigDecimal(hectopascal * INCH_MERCURY_PER_HECTOPASCAL).round(new MathContext(7)).doubleValue();
   }
 

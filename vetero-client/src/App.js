@@ -74,6 +74,7 @@ class App extends Component {
     }
     this.setState({
       showSignup: false,
+      showWeather: true,
       user: json
     });
 
@@ -110,6 +111,7 @@ class App extends Component {
 
     this.setState({
       showSignup: false,
+      showWeather: true,
       user: json,
       username: json.username
     });
@@ -174,6 +176,7 @@ class App extends Component {
     const weather = this.state.weather;
     const weatherError = this.state.weatherError;
     const showWeather = this.state.showWeather;
+    const weatherLocationCount = "locations" in weather ? weather.locations.length : 0;
     const addLocationError = this.state.addLocationError;
 
     const lastUpdated = this.state.weather.lastUpdated;
@@ -205,8 +208,10 @@ class App extends Component {
           onAddLocation={this.handleAddLocation}
           addLocationError={addLocationError}
         />
-        {showWeather && <p className="last-updated">Last updated: {lastUpdated}</p>}
-        {showWeather && (
+        {showWeather && weatherLocationCount > 0 && (
+          <p className="last-updated">Last updated: {lastUpdated}</p>
+        )}
+        {showWeather && weatherLocationCount > 0 && (
           <button className="update-weather-now" onClick={this.handleUpdateWeatherNow}>
             Update Weather Now
           </button>

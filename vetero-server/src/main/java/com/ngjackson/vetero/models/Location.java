@@ -14,6 +14,14 @@ public class Location {
   @NotBlank
   private String zip;
 
+  public Location() {
+  }
+
+  public Location(Long id, @NotBlank String zip) {
+    this.id = id;
+    this.zip = zip;
+  }
+
   public Long getId() {
     return id;
   }

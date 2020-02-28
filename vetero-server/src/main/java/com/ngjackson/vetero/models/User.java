@@ -19,6 +19,15 @@ public class User {
   @ManyToMany
   private Set<Location> locations = new HashSet<>();
 
+  public User() {
+  }
+
+  public User(Long id, @NotBlank String username, Set<Location> locations) {
+    this.id = id;
+    this.username = username;
+    this.locations = locations;
+  }
+
   public Long getId() {
     return id;
   }

@@ -6,6 +6,8 @@ import com.ngjackson.vetero.models.Wind;
 import com.ngjackson.vetero.models.openweather.OpenWeatherApiResponse;
 import com.ngjackson.vetero.models.openweather.OpenWeatherWeather;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ public class WeatherUtil {
   }
 
   public static double convertHectopascalToInchOfMercury(Double hectopascal) {
-    return hectopascal * INCH_MERCURY_PER_HECTOPASCAL;
+    return new BigDecimal(hectopascal * INCH_MERCURY_PER_HECTOPASCAL).round(new MathContext(7)).doubleValue();
   }
 
 }

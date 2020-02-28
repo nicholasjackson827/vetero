@@ -118,7 +118,6 @@ class App extends Component {
   }
 
   async handleAddLocation(zip) {
-    console.log(`Adding location ${zip}!`);
     let url = `http://localhost:8080/api/locations/`;
     let body = {
       userId: this.state.user.id,
@@ -146,7 +145,6 @@ class App extends Component {
   }
 
   async handleLocationDelete(zip) {
-    console.log("Gotta delete location with zip " + zip + "!");
     let url = `http://localhost:8080/api/locations/`;
     let body = {
       userId: this.state.user.id,
@@ -168,17 +166,19 @@ class App extends Component {
   }
 
   render() {
-    const username = this.state.username;
-    const signupUsername = this.state.signupUsername;
-    const showSignup = this.state.showSignup;
-    const usernameError = this.state.usernameError;
-    const signupError = this.state.signupError;
-    const weather = this.state.weather;
-    const weatherError = this.state.weatherError;
-    const showWeather = this.state.showWeather;
-    const weatherLocationCount = "locations" in weather ? weather.locations.length : 0;
-    const addLocationError = this.state.addLocationError;
+    const {
+      username,
+      signupUsername,
+      showSignup,
+      usernameError,
+      signupError,
+      weather,
+      weatherError,
+      showWeather,
+      addLocationError
+    } = { ...this.state };
 
+    const weatherLocationCount = "locations" in weather ? weather.locations.length : 0;
     const lastUpdated = this.state.weather.lastUpdated;
 
     return (

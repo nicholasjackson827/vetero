@@ -26,16 +26,18 @@ class WeatherAccordion extends React.Component {
   }
 
   render() {
+    // Quickly return if we aren't supposed to be shown or we have errors
     if (!this.props.show) {
       return <div />;
     } else if (this.props.weatherError.length > 0) {
       return <div>Weather error! {this.props.weatherError}</div>;
     }
 
-    // Sort the locations by city then zip
     let accordionItems = [];
 
+    // Only build the weather entries if there are any to build
     if (Object.entries(this.props.weather).length > 0) {
+      // Sort the locations by location name first, then zip
       let sortedLocations = this.props.weather.locations.slice(0);
       sortedLocations.sort((a, b) => {
         let aLocationName = a.locationName.toLowerCase();
@@ -46,6 +48,7 @@ class WeatherAccordion extends React.Component {
         return parseInt(a.zip, 10) - parseInt(b.zip, 10);
       });
 
+      // Build the accordion items, one for each location
       accordionItems = sortedLocations.map(location => {
         return (
           <AccordionItem key={location.zip}>
@@ -83,6 +86,7 @@ class WeatherAccordion extends React.Component {
       });
     }
 
+    // Always add the "AddLocation" accordion item
     accordionItems.push(
       <AccordionItem key={"add-location-accordion-item"} className="accordion__item add-location">
         <AddLocation

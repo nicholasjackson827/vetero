@@ -20,6 +20,10 @@ class App extends Component {
     this.handleAddLocation = this.handleAddLocation.bind(this);
     this.handleLocationDelete = this.handleLocationDelete.bind(this);
 
+    // I don't love having this method, but it's necessary if we assume that the app
+    // is running on port 8080 on the same host. We can't do a relative URL with the port, sadly
+    this.baseFetchUrl = `${window.location.protocol}//${window.location.hostname}:8080`;
+
     this.state = {
       username: "",
       usernameError: "",
@@ -35,7 +39,7 @@ class App extends Component {
   }
 
   async updateWeather(forceUpdate = false) {
-    let url = `/api/weather/?userId=${this.state.user.id}&forceUpdate=${forceUpdate}`;
+    let url = `${this.baseFetchUrl}/api/weather/?userId=${this.state.user.id}&forceUpdate=${forceUpdate}`;
     let response = await fetch(url);
     let json = await response.json();
 
@@ -62,7 +66,7 @@ class App extends Component {
   }
 
   async handleUsernameSubmit(event) {
-    let url = `/api/users/?username=${this.state.username}`;
+    let url = `${this.baseFetchUrl}/api/users/?username=${this.state.username}`;
     let response = await fetch(url);
     let json = await response.json();
 
@@ -89,7 +93,7 @@ class App extends Component {
   }
 
   async handleSignupSubmit(event) {
-    let url = `/api/users/`;
+    let url = `${this.baseFetchUrl}/api/users/`;
     let body = {
       username: this.state.signupUsername
     };
@@ -118,7 +122,7 @@ class App extends Component {
   }
 
   async handleAddLocation(zip) {
-    let url = `/api/locations/`;
+    let url = `${this.baseFetchUrl}/api/locations/`;
     let body = {
       userId: this.state.user.id,
       zip: zip
@@ -145,7 +149,7 @@ class App extends Component {
   }
 
   async handleLocationDelete(zip) {
-    let url = `/api/locations/`;
+    let url = `${this.baseFetchUrl}/api/locations/`;
     let body = {
       userId: this.state.user.id,
       zip: zip

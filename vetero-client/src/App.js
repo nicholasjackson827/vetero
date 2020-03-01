@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   async updateWeather(forceUpdate = false) {
-    let url = `http://localhost:8080/api/weather/?userId=${this.state.user.id}&forceUpdate=${forceUpdate}`;
+    let url = `/api/weather/?userId=${this.state.user.id}&forceUpdate=${forceUpdate}`;
     let response = await fetch(url);
     let json = await response.json();
 
@@ -62,7 +62,7 @@ class App extends Component {
   }
 
   async handleUsernameSubmit(event) {
-    let url = `http://localhost:8080/api/users/?username=${this.state.username}`;
+    let url = `/api/users/?username=${this.state.username}`;
     let response = await fetch(url);
     let json = await response.json();
 
@@ -89,7 +89,7 @@ class App extends Component {
   }
 
   async handleSignupSubmit(event) {
-    let url = `http://localhost:8080/api/users/`;
+    let url = `/api/users/`;
     let body = {
       username: this.state.signupUsername
     };
@@ -118,7 +118,7 @@ class App extends Component {
   }
 
   async handleAddLocation(zip) {
-    let url = `http://localhost:8080/api/locations/`;
+    let url = `/api/locations/`;
     let body = {
       userId: this.state.user.id,
       zip: zip
@@ -145,7 +145,7 @@ class App extends Component {
   }
 
   async handleLocationDelete(zip) {
-    let url = `http://localhost:8080/api/locations/`;
+    let url = `/api/locations/`;
     let body = {
       userId: this.state.user.id,
       zip: zip

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class LocationController {
 
   private static final String VALID_NUMBER_REGEX = "\\d+(\\.\\d+)?";
